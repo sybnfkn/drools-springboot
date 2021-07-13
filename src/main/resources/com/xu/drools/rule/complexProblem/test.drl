@@ -1,0 +1,25 @@
+package com.xu.drools
+
+import com.xu.drools.bean.test.UserContext;
+import com.xu.drools.bean.test.*;
+
+
+// 下单加钱
+rule "rule_createorder_add"
+    salience 3
+    when
+        $n:UserCreateOrderTemplate()
+        $limit:CommonLimit()
+        $m:UserContext(validOrder == $n.getCreateOrderCount(), // 一个有效下单
+            money < $limit.moneyUpperLimit, // 当前钱少于moneyUpperLimit
+            diamond < $limit.diamonUpperLimit,
+            refundCount < $limit.refundCountUpperLimit,
+            invateCount < $limit.inviteCountUpperLimit);
+    then
+        System.out.println("有效下单,各项条件符合："+$m.getMoney());
+        $m.setMoney($m.getMoney() + $n.getAddMoney());
+        $m.setDiamond($m.getDiamond() + $n.getAddDiamond());
+        // 重置条件
+        $m.setValidOrder(0);
+        update($m)
+end

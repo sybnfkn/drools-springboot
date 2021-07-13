@@ -26,7 +26,7 @@ public class MingDrink {
     private static void execute(KieContainer kc) {
         KieSession ksession = kc.newKieSession("mingKS");
         XiaoMing xiaoMing=new XiaoMing();
-        xiaoMing.setMoney(50);
+        xiaoMing.setMoney(40);
         ksession.insert(xiaoMing);
         ksession.fireAllRules();
         ksession.dispose();

@@ -21,4 +21,8 @@
     <kbase name="HonestPoliticianKB" packages="com.xu.drools.rule.honestpolitician">
         <ksession name="HonestPoliticianKS"/>
     </kbase>
+
+    <kbase name="testKB" packages="com.xu.drools.rule.complexProblem">
+        <ksession name="testKS"/>
+    </kbase>
 </kmodule>
