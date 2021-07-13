@@ -14,6 +14,7 @@ import org.kie.api.runtime.KieSession;
  * @Auther: Messi
  * @Date: 2021/07/13/3:28 下午
  * @Description:
+ * https://blog.csdn.net/caomiao2006/article/details/46417207
  */
 public class Test {
 
