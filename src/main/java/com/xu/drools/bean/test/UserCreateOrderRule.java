@@ -10,7 +10,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class UserCreateOrderTemplate {
+public class UserCreateOrderRule {
 
     private Integer createOrderCount;
 

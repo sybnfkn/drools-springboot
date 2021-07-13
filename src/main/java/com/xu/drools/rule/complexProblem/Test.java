@@ -2,7 +2,8 @@ package com.xu.drools.rule.complexProblem;
 
 import com.xu.drools.bean.test.CommonLimit;
 import com.xu.drools.bean.test.UserContext;
-import com.xu.drools.bean.test.UserCreateOrderTemplate;
+import com.xu.drools.bean.test.UserCreateOrderRule;
+import com.xu.drools.bean.test.UserRefundOrderRule;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -28,18 +29,28 @@ public class Test {
         /**
          * 准备用户的基础信息
          */
-        userContext.setMoney(200);
-        userContext.setDiamond(200);
-        userContext.setValidOrder(1);
-        userContext.setInvateCount(20);
-        userContext.setRefundCount(1);
+        userContext.setCurrMoney(200);
+        userContext.setCurrDiamond(200);
+        userContext.setValidOrder(0);
+        userContext.setCurrInvateCount(20);
+        userContext.setCurrRefundCount(1);
+
+        userContext.setRefundOrder(1);
         /**
-         * 邀请人加金币钻石模版,下完一单 加100块钱，20钻石
+         * 下单规则：邀请人加金币钻石模版,下完一单 加100块钱，20钻石
          */
-        UserCreateOrderTemplate userCreateOrderTemplate = new UserCreateOrderTemplate();
+        UserCreateOrderRule userCreateOrderTemplate = new UserCreateOrderRule();
         userCreateOrderTemplate.setCreateOrderCount(1);
         userCreateOrderTemplate.setAddMoney(100);
         userCreateOrderTemplate.setAddDiamond(20);
+
+        /**
+         * 退款规则
+         */
+        UserRefundOrderRule userRefundOrderRule = new UserRefundOrderRule();
+        userRefundOrderRule.setRefundOrderCount(1);
+        userRefundOrderRule.setDeductionDiamond(-20);
+        userRefundOrderRule.setDeductionMoney(-100);
 
         /**
          * 加现金钻石通用限制
@@ -49,13 +60,16 @@ public class Test {
         commonLimit.setMoneyUpperLimit(1000);
         commonLimit.setRefundCountUpperLimit(10);
         commonLimit.setInviteCountUpperLimit(30);
+        commonLimit.setMoneyLowerLimit(0);
 
         ksession.insert(userContext);
         ksession.insert(userCreateOrderTemplate);
         ksession.insert(commonLimit);
+        ksession.insert(userRefundOrderRule);
+
         ksession.fireAllRules();
         ksession.dispose();
-        System.out.println(userContext.getMoney() + "----" +userContext.getDiamond());
+        System.out.println(userContext.getNeedAddDiamond() + "。。。。。。" +userContext.getNeedAddMoney());
     }
 
 }

@@ -15,21 +15,24 @@ public class UserContext {
     // 有效下单
     private Integer validOrder;
 
+    // 退款订单
+    private Integer refundOrder;
+
     // 当前金额
-    private Integer money;
+    private Integer currMoney;
 
     // 当前钻石
-    private Integer diamond;
+    private Integer currDiamond;
 
     // 邀请人数量
-    private Integer invateCount;
+    private Integer currInvateCount;
 
     // 退款数量
-    private Integer refundCount;
+    private Integer currRefundCount;
 
+    private Integer needAddMoney;
 
-
-
+    private Integer needAddDiamond;
 
 }
 

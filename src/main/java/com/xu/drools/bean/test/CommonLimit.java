@@ -24,4 +24,7 @@ public class CommonLimit {
     // 退款上限
     private Integer refundCountUpperLimit;
 
+    // 扣款金额下限
+    private Integer moneyLowerLimit;
+
 }

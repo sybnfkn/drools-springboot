@@ -8,18 +8,35 @@ import com.xu.drools.bean.test.*;
 rule "rule_createorder_add"
     salience 3
     when
-        $n:UserCreateOrderTemplate()
+        $n:UserCreateOrderRule()
         $limit:CommonLimit()
         $m:UserContext(validOrder == $n.getCreateOrderCount(), // 一个有效下单
-            money < $limit.moneyUpperLimit, // 当前钱少于moneyUpperLimit
-            diamond < $limit.diamonUpperLimit,
-            refundCount < $limit.refundCountUpperLimit,
-            invateCount < $limit.inviteCountUpperLimit);
+            currMoney < $limit.moneyUpperLimit, // 当前钱少于moneyUpperLimit
+            currDiamond < $limit.diamonUpperLimit,
+            currRefundCount < $limit.refundCountUpperLimit,
+            currInvateCount < $limit.inviteCountUpperLimit);
     then
-        System.out.println("有效下单,各项条件符合："+$m.getMoney());
-        $m.setMoney($m.getMoney() + $n.getAddMoney());
-        $m.setDiamond($m.getDiamond() + $n.getAddDiamond());
+        System.out.println("有效下单,各项条件符合");
+        $m.setNeedAddMoney($n.getAddMoney());
+        $m.setNeedAddDiamond($n.getAddDiamond());
         // 重置条件
         $m.setValidOrder(0);
+        update($m)
+end
+
+rule "rule_refundorder_ded"
+    salience 3
+    when
+        $n:UserRefundOrderRule()
+        $limit:CommonLimit()
+        $m:UserContext(refundOrder == $n.getRefundOrderCount(), // 一个退款单
+            currMoney > $limit.moneyLowerLimit // 当前钱少于moneyUpperLimit
+            );
+    then
+        System.out.println("有效退款,各项条件符合");
+        $m.setNeedAddMoney($n.getDeductionMoney());
+        $m.setNeedAddDiamond($n.getDeductionDiamond());
+        // 重置条件
+        $m.setRefundOrder(0);
         update($m)
 end
